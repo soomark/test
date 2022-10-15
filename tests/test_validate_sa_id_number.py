@@ -1,33 +1,141 @@
-from sa_idnumber.validate_sa_id_number import valid_id_length, id_is_numeric, valid_year, valid_month,valid_day,valid_gender,valid_citizen,valid_race,valid_checksum_digit
+import pytest
+from sa_id_validation.sa_id_number import is_id_number_valid
+
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086', 'Valid ID number'),
+        ('2909035800085', 'Valid ID number'),
+        ('29090358000851','Invalid ID number'),
+        ('2909035800','Invalid ID number'),
+    ),
+)
 
 
-def test_id_length():
-    assert valid_id_length("20010148000867") == False
+def test_correct_lenght(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
 
 
-def test_id_numeric():
-    assert id_is_numeric("20010A4800086") == False
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086','Valid ID number'),
+        ('2909035800085','Valid ID number'),
+        ('20A1014800086','Invalid ID number'),
+        ('2001s14800086','Invalid ID number'),
+        ('2001+148"0086','Invalid ID number'),
+        
+    ),
+)
 
 
-def test_valid_year():
-    assert valid_year("A209035800085") == False
+def test_number_character_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
 
 
-def test_valid_month():
-    assert valid_month("2013305800085") == False
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086','Valid ID number'),
+        ('2909035800085','Valid ID number'),
+        ('2!01014800086','Invalid ID number'),
+        ('2=09035800085','Invalid ID number'),        
+    ),
+)
 
 
-def test_valid_day():
-    assert valid_day("2908435800085") == False
+def test_year_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
 
 
-def test_valid_gender():
-    assert valid_gender("2908241480085") == False
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086','Valid ID number'),
+        ('2909035800085','Valid ID number'),
+        ('20r1014800086','Invalid ID number'),
+        ('290-035800085','Invalid ID number'),
+        ('2013014800086','Invalid ID number'),
+        ('0000014800086','Invalid ID number'),
+    ),
+)
 
 
-def test_valid_citizen():
-    assert valid_citizen("2908343580285") == False
+def test_month_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
 
 
-def test_valid_race():
-    assert valid_race("2908241480075") == False
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086','Valid ID number'),
+        ('2909035800085','Valid ID number'),
+        ('2004314800086','Invalid ID number'),
+        ('2002304800086','Invalid ID number'),
+        ('2904315800085','Invalid ID number'),
+        ('0000004800086','Invalid ID number'),
+    ),
+)
+
+
+def test_day_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
+
+
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086','Valid ID number'),
+        ('2909035800085','Valid ID number'),
+        ('2909030000085','Valid ID number'),
+    ),
+)
+
+
+def test_gender_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted               
+
+
+@pytest.mark.parametrize(
+    'test_input,excepted',
+    (
+        ('2001014800086', 'Valid ID number'),
+        ('2909035800085', 'Valid ID number'),
+        ('2909035800285', 'Invalid ID number'),
+        ('2909035800585', 'Invalid ID number'),
+    ),
+
+ )
+
+def test_citizen_check(test_input,excepted):
+    assert is_id_number_valid(test_input) == excepted
+
+
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086', 'Valid ID number'),
+        ('2909035800085', 'Valid ID number'),
+        ('2001014800076', 'Invalid ID number'),
+        ('2909035800065', 'Invalid ID number'),
+    ),
+)
+
+
+def test_race_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
+
+
+@pytest.mark.parametrize(
+    'test_input, excepted',
+    (
+        ('2001014800086', 'Valid ID number'),
+        ('2909035800085', 'Valid ID number'),
+        ('2001014800087', 'Invalid ID number'),
+        ('2909035800086', 'Invalid ID number'),
+    ),
+
+)
+
+def test_checksum_check(test_input,excepted):
+        assert is_id_number_valid(test_input) == excepted
